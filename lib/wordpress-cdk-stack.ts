@@ -73,5 +73,17 @@ export class WordpressCdkStack extends cdk.Stack {
       path: '/',
       healthyHttpCodes: "200-399"
     })
+    const targetScaling =  wp.service.autoScaleTaskCount({
+      minCapacity: 3,
+      maxCapacity: 40
+    })
+
+    targetScaling.scaleOnCpuUtilization('cpuScaling', {
+      targetUtilizationPercent: 75
+    })
+
+    targetScaling.scaleOnMemoryUtilization('memoryScaling', {
+      targetUtilizationPercent: 75
+    })
   }
 }
